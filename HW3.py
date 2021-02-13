@@ -64,7 +64,7 @@ for node in bg:
 
 # Apply color and position changes, then display with matplotlib
 nx.draw(bg, pos=pos, node_color=color_map, with_labels=True)
-#plt.show()
+plt.show()
 
 
 
@@ -115,17 +115,19 @@ for i in range(len(col_order)):
 # Make an undirected graph of the critics. Edges between critics have a number attribute that represents the # of movies seen in common
 # This graph will be made by taking values from an actor-to-actor matrix
 
-#Edna, Homer, Krusty, Lisa, Marge, Moe, Ned 				(Top to bottom)
-#Edna, Homer, Krusty, Lisa, Marge, Moe, Ned 				(Left to Right)
+#Edna, Homer, Krusty, Lisa, Marge, Moe, Ned 		(Top to bottom)
+#Edna, Homer, Krusty, Lisa, Marge, Moe, Ned 		(Left to Right)
 AM = M.dot(np.transpose(M))
-print(AM)
 
-#1->6 columns
-#0->5 rows
+
+CG = nx.Graph()
 # Compute number of similar movies seen between critics by looking at actor-to-actor matrix (upper right triangle of matrix)
 for i in range(0,len(row_order)-1):
 	for q in range(i+1, len(row_order)):
-		print(row_order[i], "to", row_order[q], AM[i][q])
+		if(AM[i][q] > 0):
+			CG.add_edge(row_order[i], row_order[q], weight=AM[i][q])
 
-
-
+pos=nx.spring_layout(CG)
+nx.draw_networkx_edge_labels(CG, pos)
+nx.draw(CG, pos, with_labels=True)
+plt.show()
