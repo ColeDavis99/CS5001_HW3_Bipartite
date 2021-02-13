@@ -131,3 +131,8 @@ pos=nx.spring_layout(CG)
 nx.draw_networkx_edge_labels(CG, pos)
 nx.draw(CG, pos, with_labels=True)
 plt.show()
+
+###################################
+''' STEP 5 '''
+###################################
+print("WUB")
