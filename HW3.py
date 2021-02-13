@@ -3,6 +3,7 @@ import numpy as np
 import networkx as nx
 from networkx.algorithms.bipartite import sets, weighted_projected_graph
 import matplotlib.pyplot as plt
+from networkx.algorithms import bipartite
 
 
 # Function that prints the key with the largest numeric value in a dict
@@ -68,7 +69,7 @@ nx.draw(bg, pos=pos, node_color=color_map, with_labels=True)
 
 
 ###################################
-	''' STEP 2 '''
+''' STEP 2 '''
 ###################################
 # List the most important movie and most important critic for the following centrality metrics: degree, closeness, betweenness
 # Second argument could be l or r, score for all nodes are returned regardless
@@ -83,7 +84,27 @@ DictLargestValue(bc, list(l), "betweenness")
 
 
 ###################################
-	''' STEP 3 '''
+''' STEP 3 '''
 ###################################
-# Create an event by actor matrix to determin movie that have been seen by 3 or more critics
+# Make a bipartite matrix
+row_order = sorted(list(l))	#Rows are critics
+col_order = sorted(list(r))	#Cols are movies
+numpyMatrix = bipartite.biadjacency_matrix(bg, row_order, column_order=col_order)
+
+# Create an event by actor matrix to determine movies that have been seen by 3 or more critics
+M = numpyMatrix.A	#.A gets us an ndarray object
+#print(row_order)	#Edna, Homer, Krusty, Lisa, Marge, Moe, Ned 				(Top to bottom)
+#print(col_order)	#Cold, Eyes, Far, Into, Jack, Jerry, Live, Prada, Hours, Others	(Left to Right)
+
+timesViewed = 0	#Increment number of times a movie has been seen for each movie. Reset to zero for each movie.
+print("Movies seen by three or more critics: ")
+for i in range(len(col_order)):
+	timesViewed = 0
+	for q in range(len(row_order)):
+		timesViewed = timesViewed + M[q][i]
+	
+	#Output the name of the film if it has been viewed by three or more critics.
+	if(timesViewed >= 3):
+		print(col_order[i], "has been viewed by", timesViewed, "critics.")
+
 
