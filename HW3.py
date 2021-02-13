@@ -33,16 +33,20 @@ def DictLargestValue(dictionary, critic_list, centrality_type):
 
 
 
+
+
+
+###################################
+	''' STEP 1 '''
+###################################
 # Read in the data
 matrix = pd.read_csv("userRatedMovie.csv")
 
 # Create Bipartite Graph from Pandas dataframe
 bg = nx.from_pandas_edgelist(matrix, source="name", target="title", edge_attr="userRating")
 
-
 # Distinguish difference between movie node and critic node by making two sets (l set and r set)
 l, r = nx.bipartite.sets(bg)	#l is critics, r is movies
-
 
 # Assign position for each node (how it gets rendered with matplotlib)
 pos = {}
@@ -57,7 +61,15 @@ for node in bg:
 	else:
 		color_map.append("blue")
 
+# Apply color and position changes, then display with matplotlib
+nx.draw(bg, pos=pos, node_color=color_map, with_labels=True)
+#plt.show()
 
+
+
+###################################
+	''' STEP 2 '''
+###################################
 # List the most important movie and most important critic for the following centrality metrics: degree, closeness, betweenness
 # Second argument could be l or r, score for all nodes are returned regardless
 dc = nx.bipartite.degree_centrality(bg, l)
@@ -69,6 +81,9 @@ DictLargestValue(cc, list(l), "closeness")
 DictLargestValue(bc, list(l), "betweenness")
 
 
-# Apply color and position changes, then display with matplotlib
-nx.draw(bg, pos=pos, node_color=color_map, with_labels=True)
-#plt.show()
+
+###################################
+	''' STEP 3 '''
+###################################
+# Create an event by actor matrix to determin movie that have been seen by 3 or more critics
+
