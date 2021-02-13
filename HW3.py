@@ -11,8 +11,10 @@ matrix = pd.read_csv("userRatedMovie.csv")
 # Create Bipartite Graph from Pandas dataframe
 bg = nx.from_pandas_edgelist(matrix, source="name", target="title", edge_attr="userRating")
 
+
 # Distinguish difference between movie node and critic node by making two sets (l set and r set)
 l, r = nx.bipartite.sets(bg)	#l is critics, r is movies
+
 
 # Assign position for each node (how it gets rendered with matplotlib)
 pos = {}
@@ -27,5 +29,6 @@ for node in bg:
 	else:
 		color_map.append("blue")
 
+# Apply color and position changes, then display with matplotlib
 nx.draw(bg, pos=pos, node_color=color_map, with_labels=True)
 plt.show()
