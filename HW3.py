@@ -16,11 +16,11 @@ def DictLargestValue(dictionary, critic_list, centrality_type):
 	
 	
 	for key in dictionary.keys():
-		if(key in critic_list):				#This if statement takes care of the critics
+		if(key in critic_list):						#This if statement takes care of the critics
 			if(dictionary[key] > largestCriticVal):
 				largestCriticVal = dictionary[key]
 				topCriticKey = key
-		else:							#This else statement takes care of the movies
+		else:										#This else statement takes care of the movies
 			if(dictionary[key] > largestMovieVal):
 				largestMovieVal = dictionary[key]
 				topMovieKey = key
@@ -35,10 +35,8 @@ def DictLargestValue(dictionary, critic_list, centrality_type):
 
 
 
-
-
 ###################################
-	''' STEP 1 '''
+''' STEP 1 '''
 ###################################
 # Read in the data
 matrix = pd.read_csv("userRatedMovie.csv")
@@ -63,8 +61,9 @@ for node in bg:
 		color_map.append("blue")
 
 # Apply color and position changes, then display with matplotlib
-nx.draw(bg, pos=pos, node_color=color_map, with_labels=True)
-plt.show()
+plt.figure(figsize=(30,30))
+nx.draw(bg, pos=pos, node_color=color_map, with_labels=True,)
+#plt.show()
 
 
 
@@ -119,20 +118,30 @@ for i in range(len(col_order)):
 #Edna, Homer, Krusty, Lisa, Marge, Moe, Ned 		(Left to Right)
 AM = M.dot(np.transpose(M))
 
-
 CG = nx.Graph()
 # Compute number of similar movies seen between critics by looking at actor-to-actor matrix (upper right triangle of matrix)
 for i in range(0,len(row_order)-1):
 	for q in range(i+1, len(row_order)):
-		if(AM[i][q] > 0):
+		if(AM[i][q] > 0): 
 			CG.add_edge(row_order[i], row_order[q], weight=AM[i][q])
 
+plt.figure(figsize=(20,20))
 pos=nx.spring_layout(CG)
 nx.draw_networkx_edge_labels(CG, pos)
 nx.draw(CG, pos, with_labels=True)
-plt.show()
+#plt.show()
+
+
 
 ###################################
 ''' STEP 5 '''
 ###################################
-print("WUB")
+#Cold, Eyes, Far, Into, Jack, Jerry, Live, Prada, Hours, Others	(Left to Right)
+#Cold, Eyes, Far, Into, Jack, Jerry, Live, Prada, Hours, Others	(Top to Bottom)
+MM = np.transpose(M).dot(M)	#Movie Matrix
+#print(MM)
+print("\nPairs of movies seen by two or more of the same critics:")
+for i in range(0,len(col_order)-1):
+	for q in range(i+1, len(col_order)):
+		if(MM[i][q] >= 2): 
+			print(col_order[i], col_order[q])
