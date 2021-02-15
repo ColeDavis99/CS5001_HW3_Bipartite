@@ -139,9 +139,9 @@ nx.draw(CG, pos, with_labels=True)
 #Cold, Eyes, Far, Into, Jack, Jerry, Live, Prada, Hours, Others	(Left to Right)
 #Cold, Eyes, Far, Into, Jack, Jerry, Live, Prada, Hours, Others	(Top to Bottom)
 MM = np.transpose(M).dot(M)	#Movie Matrix
-#print(MM)
+# print(MM)
 print("\nPairs of movies seen by two or more of the same critics:")
 for i in range(0,len(col_order)-1):
 	for q in range(i+1, len(col_order)):
-		if(MM[i][q] >= 2): 
-			print(col_order[i], col_order[q])
+		if(MM[i][q] >= 2):
+			print("("+col_order[i] + ", " + col_order[q] + ")" + ":", MM[i][q], "different critics.")
